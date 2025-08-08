@@ -5,14 +5,14 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import models.Curso;
 import models.Estudiante;
-import utils.JPAUtilidad;
+import utils.JPAUtil;
 
 import java.util.List;
 
 public class ControladorCurso {
 
     public void crearCurso(String nombre, int creditos) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Curso curso = new Curso(nombre, creditos);
@@ -22,7 +22,7 @@ public class ControladorCurso {
     }
 
     public List<Curso> buscarTodos() {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         TypedQuery<Curso> consulta = gestor.createQuery("SELECT c FROM Curso c", Curso.class);
         List<Curso> resultado = consulta.getResultList();
         gestor.close();
@@ -30,7 +30,7 @@ public class ControladorCurso {
     }
 
     public void actualizarCurso(Long id, String nombre, int creditos) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Curso curso = gestor.find(Curso.class, id);
@@ -43,7 +43,7 @@ public class ControladorCurso {
     }
 
     public void eliminarCurso(Long id) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Curso curso = gestor.find(Curso.class, id);
@@ -55,7 +55,7 @@ public class ControladorCurso {
     }
 
     public List<Estudiante> estudiantesEnCurso(Long cursoId) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         Curso curso = gestor.find(Curso.class, cursoId);
         curso.getEstudiantes().size();
         List<Estudiante> estudiantes = List.copyOf(curso.getEstudiantes());
@@ -64,7 +64,7 @@ public class ControladorCurso {
     }
 
     public List<Curso> filtrar(String nombre, Integer creditos) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         String jpql = "SELECT c FROM Curso c WHERE 1=1";
         if (nombre != null && !nombre.isBlank()) {
             jpql += " AND LOWER(c.nombre) LIKE LOWER(:nombre)";

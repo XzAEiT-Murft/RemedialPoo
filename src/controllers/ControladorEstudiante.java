@@ -5,14 +5,14 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import models.Curso;
 import models.Estudiante;
-import utils.JPAUtilidad;
+import utils.JPAUtil;
 
 import java.util.List;
 
 public class ControladorEstudiante {
 
     public void crearEstudiante(String nombre, String correo) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Estudiante estudiante = new Estudiante(nombre, correo);
@@ -22,7 +22,7 @@ public class ControladorEstudiante {
     }
 
     public List<Estudiante> buscarTodos() {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         TypedQuery<Estudiante> consulta = gestor.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
         List<Estudiante> resultado = consulta.getResultList();
         gestor.close();
@@ -30,7 +30,7 @@ public class ControladorEstudiante {
     }
 
     public void actualizarEstudiante(Long id, String nombre, String correo) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Estudiante estudiante = gestor.find(Estudiante.class, id);
@@ -43,7 +43,7 @@ public class ControladorEstudiante {
     }
 
     public void eliminarEstudiante(Long id) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Estudiante estudiante = gestor.find(Estudiante.class, id);
@@ -55,7 +55,7 @@ public class ControladorEstudiante {
     }
 
     public void inscribirEstudiante(Long estudianteId, Long cursoId) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Estudiante estudiante = gestor.find(Estudiante.class, estudianteId);
@@ -69,7 +69,7 @@ public class ControladorEstudiante {
     }
 
     public void removerInscripcion(Long estudianteId, Long cursoId) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         EntityTransaction transaccion = gestor.getTransaction();
         transaccion.begin();
         Estudiante estudiante = gestor.find(Estudiante.class, estudianteId);
@@ -83,7 +83,7 @@ public class ControladorEstudiante {
     }
 
     public List<Curso> cursosDeEstudiante(Long estudianteId) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         Estudiante estudiante = gestor.find(Estudiante.class, estudianteId);
         estudiante.getCursos().size();
         List<Curso> cursos = List.copyOf(estudiante.getCursos());
@@ -92,7 +92,7 @@ public class ControladorEstudiante {
     }
 
     public List<Estudiante> buscar(String texto) {
-        EntityManager gestor = JPAUtilidad.obtenerEntityManager();
+        EntityManager gestor = JPAUtil.getEntityManager();
         TypedQuery<Estudiante> consulta = gestor.createQuery(
                 "SELECT e FROM Estudiante e WHERE LOWER(e.nombre) LIKE LOWER(:txt) OR LOWER(e.correo) LIKE LOWER(:txt)",
                 Estudiante.class);
