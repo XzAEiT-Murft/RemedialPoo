@@ -47,22 +47,27 @@ public class MainView {
 
         PestanaEstudiante pestEst =
                 new PestanaEstudiante(ctrlEst, estudiantes, actualizar);
+        PestanaCurso pestCur =
+                new PestanaCurso(ctrlCurso, cursos, actualizar);
         PestanaInscripcion pestIns =
                 new PestanaInscripcion(ctrlEst, estudiantes, cursos, actualizar);
 
         Tab tabEst = pestEst.construir();
+        Tab tabCur = pestCur.construir();
         Tab tabIns = pestIns.construir();
 
         StackPane contenedor = new StackPane(tabEst.getContent());
 
         Button btnEst = new Button("Estudiantes");
         btnEst.setOnAction(e -> contenedor.getChildren().setAll(tabEst.getContent()));
+        Button btnCur = new Button("Cursos");
+        btnCur.setOnAction(e -> contenedor.getChildren().setAll(tabCur.getContent()));
         Button btnIns = new Button("Inscripciones");
         btnIns.setOnAction(e -> contenedor.getChildren().setAll(tabIns.getContent()));
         Button btnSalir = new Button("Salir");
         btnSalir.setOnAction(e -> stage.close());
 
-        HBox menu = new HBox(10, btnEst, btnIns, btnSalir);
+        HBox menu = new HBox(10, btnEst, btnCur, btnIns, btnSalir);
         menu.setPadding(new Insets(10));
 
         BorderPane root = new BorderPane();

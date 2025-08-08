@@ -48,6 +48,11 @@ public class ControladorCurso {
         transaccion.begin();
         Curso curso = gestor.find(Curso.class, id);
         if (curso != null) {
+            if (!curso.getEstudiantes().isEmpty()) {
+                transaccion.rollback();
+                gestor.close();
+                throw new IllegalStateException("No se puede eliminar un curso con estudiantes inscritos");
+            }
             gestor.remove(curso);
         }
         transaccion.commit();

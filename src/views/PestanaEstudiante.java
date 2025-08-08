@@ -18,7 +18,7 @@ public class PestanaEstudiante {
     private final ObservableList<Estudiante> estudiantes;
     private final Runnable actualizar;
 
-    public PestanaEstudiante(ControladorEstudiante controlador,
+public PestanaEstudiante(ControladorEstudiante controlador,
                              ObservableList<Estudiante> estudiantes,
                              Runnable actualizar) {
         this.controlador = controlador;
@@ -42,9 +42,17 @@ public class PestanaEstudiante {
         TextField campoCorreo = new TextField();
         campoCorreo.setPromptText("Correo");
         Button botonAgregar = new Button("Agregar");
+        Button botonActualizar = new Button("Actualizar");
         Button botonEliminar = new Button("Eliminar");
         Label mensaje = new Label();
         mensaje.getStyleClass().add("message");
+
+        tabla.getSelectionModel().selectedItemProperty().addListener((obs, old, seleccionado) -> {
+            if (seleccionado != null) {
+                campoNombre.setText(seleccionado.getNombre());
+                campoCorreo.setText(seleccionado.getCorreo());
+            }
+        });
 
         botonAgregar.setOnAction(e -> {
             if (campoNombre.getText().isBlank() || campoCorreo.getText().isBlank()) {
@@ -65,15 +73,35 @@ public class PestanaEstudiante {
             }
         });
 
+        botonActualizar.setOnAction(e -> {
+            Estudiante seleccionado = tabla.getSelectionModel().getSelectedItem();
+            if (seleccionado != null) {
+                try {
+                    controlador.actualizarEstudiante(seleccionado.getId(),
+                            campoNombre.getText(), campoCorreo.getText());
+                    actualizar.run();
+                    mensaje.setText("Estudiante actualizado");
+                    mensaje.getStyleClass().remove("error");
+                } catch (Exception ex) {
+                    mensaje.setText("Error: " + ex.getMessage());
+                    mensaje.getStyleClass().add("error");
+                }
+            }
+        });
+
         botonEliminar.setOnAction(e -> {
             Estudiante seleccionado = tabla.getSelectionModel().getSelectedItem();
             if (seleccionado != null) {
                 controlador.eliminarEstudiante(seleccionado.getId());
                 actualizar.run();
+                mensaje.setText("Estudiante eliminado");
+                mensaje.getStyleClass().remove("error");
+                campoNombre.clear();
+                campoCorreo.clear();
             }
         });
 
-        HBox formulario = new HBox(5, campoNombre, campoCorreo, botonAgregar, botonEliminar);
+        HBox formulario = new HBox(5, campoNombre, campoCorreo, botonAgregar, botonActualizar, botonEliminar);
         formulario.setPadding(new Insets(10));
         VBox vbox = new VBox(tabla, formulario, mensaje);
         Tab tab = new Tab("Estudiantes", vbox);

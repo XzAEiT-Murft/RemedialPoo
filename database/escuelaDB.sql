@@ -30,3 +30,21 @@ CREATE TABLE inscripciones (
     FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
 );
 GO
+
+--crea registros para la db
+INSERT INTO estudiantes (nombre, correo) VALUES
+    ('Juan Perez', 'juan.perez@example.com'),
+    ('Maria Gomez', 'maria.gomez@example.com'),
+    ('Luis Rodriguez', 'luis.rodriguez@example.com');
+
+INSERT INTO cursos (nombre, creditos) VALUES
+    ('Matematicas', 5),
+    ('Historia', 4),
+    ('Ciencias', 6);
+
+INSERT INTO inscripciones (estudiante_id, curso_id) VALUES
+    (1, 1),
+    (1, 2),
+    (2, 1),
+    (2, 3),
+    (3, 2);
