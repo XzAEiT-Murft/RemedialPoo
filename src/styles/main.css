@@ -1,1 +1,16 @@
-q
+.root {
+    -fx-font-family: Arial, sans-serif;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.label.message {
+    -fx-text-fill: green;
+}
+
+.label.error {
+    -fx-text-fill: red;
+}
